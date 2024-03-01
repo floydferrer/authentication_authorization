@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Create User{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <h1 class="display-1">Create User</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {% for field in form 
+                if field.widget.input_type != 'hidden' %}
+            <p>
+                {{field.label}}
+                    {{field(class_='form-control')}}
+                
+                {% for err in field.errors %}
+                    {{err}}
+                {% endfor%}
+            </p>
+            {% endfor %}
+            <button class="btn btn-outline-primary ms-2 mt-2">Submit</button>
+        </form>
+        <button onclick="window.location.href='/';" class="btn btn-outline-danger ms-2 mt-2">Cancel</button>
+    </div>
+    {% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Edit Feedback{% endblock %}
+{% block usernav %}
+    {% if session['username'] %}
+    <li class="nav-item">
+        Welcome, <a class="nav-link" href="/users/{{session['username']}}">{{session['username']}}</a>
+    </li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <h1 class="display-1">Edit Feedback</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {% for field in form 
+                if field.widget.input_type != 'hidden' %}
+            <p>
+                {{field.label}}
+                    {% if field.name == 'title' %}
+                        {{field(class_='form-control', value_=post.title)}}
+                    {% else %}
+                        {{field(class_='form-control', value_=post.content)}}
+                    {% endif %}
+                
+                {% for err in field.errors %}
+                    {{err}}
+                {% endfor%}
+            </p>
+            <!-- when iterating through the form, can field value be dynamically inserted into value_ instead of hardcoding?
+                <p>
+                {{field.label}}
+                    {{field(class_='form-control', value_=post.title)}}
+                
+                {% for err in field.errors %}
+                    {{err}}
+                {% endfor%}
+            </p> 
+        -->
+            {% endfor %}
+            <button class="btn btn-outline-primary ms-2 mt-2">Submit</button>
+        </form>
+        <button onclick="window.location.href='/users/{{post.username}}';" class="btn btn-outline-danger ms-2 mt-2">Cancel</button>
+    </div>
+    {% endblock %}

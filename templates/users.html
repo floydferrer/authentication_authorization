@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Create User{% endblock %}
+{% block usernav %}
+    {% if session['username'] %}
+    <li class="nav-item">
+        Welcome, <a class="nav-link" href="/users/{{session['username']}}">{{session['username']}}</a>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="display-1">Welcome {{user.username}} to the Chill Out!</h1>
+    <h2 class="display-6">Name: {{user.first_name}} {{user.last_name}}</h2>
+    <h2 class="display-6">Email: {{user.email}}</h2>
+    <h2 class="display-6">Feedback:</h2>
+    {% for post in user.feedback %}
+    <div class="card" style="width: 30rem;">
+        <div class="card-body">
+            <h5 class="card-title">
+                {{ post.title }}
+                <form style="display:inline;" action="/feedback/{{post.id}}/delete" method="POST">
+                    <button class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                </form>
+                <form style="display:inline;" action="/feedback/{{post.id}}/update" method="POST">
+                    <button class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i></button>
+                </form>
+            </h5>
+            <p class="card-text">{{ post.content }}</p>
+        </div>
+    </div>
+    {% endfor %}
+    <form><button class="btn btn-outline-primary mb-2" formaction="/users/{{user.username}}/feedback/add">Add Feedback</button></form>
+    <form><button class="btn btn-outline-success mb-2" formaction="/logout">Logout</button></form>
+    <form><button class="btn btn-outline-danger mb-2" formmethod="POST" formaction="/users/{{user.username}}/delete">Delete User</button></form>
+{% endblock %}
